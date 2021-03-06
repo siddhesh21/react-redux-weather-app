@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 import axios from "axios";
@@ -7,13 +7,17 @@ function App() {
   const [weatherInfo, setWeatherInfo] = useState(null);
   const inputRef = useRef(null);
 
+  useEffect(() => {
+    fetchWeatherInfo();
+  }, []);
+
   const fetchWeatherInfo = (e) => {
-    e.preventDefault();
+    e?.preventDefault();
     const options = {
       method: "GET",
       url: "https://community-open-weather-map.p.rapidapi.com/weather",
       params: {
-        q: inputRef.current.value, // "Dublin, ie"
+        q: inputRef.current.value || "Dublin, ie", // "Dublin, ie"
         units: "metric",
       },
       headers: {
@@ -44,6 +48,7 @@ function App() {
           Show me the Weather
         </button>
         <h2>{weatherInfo?.name}</h2>
+        <h4>{weatherInfo?.main.temp}</h4>
       </form>
     </div>
   );
